@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<umbPackage>
+	<info>
+		<package>
+			<name>ImageProcessor for Umbraco</name>
+			<version>0.0.0</version>
+			<license url="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
+			<url>http://our.umbraco.org/projects/</url>
+			<requirements>
+				<major>0</major>
+				<minor>0</minor>
+				<patch>0</patch>
+			</requirements>
+		</package>
+		<author>
+			<name>James South</name>
+			<website>https://github.com/JimBobSquarePants</website>
+		</author>
+		<readme>
+			<![CDATA[]]>
+		</readme>
+	</info>
+	<DocumentTypes />
+	<Templates />
+	<Stylesheets />
+	<Macros />
+	<DictionaryItems />
+	<Languages />
+	<DataTypes />
+	<Actions />
+	<control />
+	<files />
+</umbPackage>

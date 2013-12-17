@@ -1,0 +1,14 @@
+_ReSharper.*
+[Bb]in
+[Bb]uild
+[Oo]bj
+*.suo
+*.user
+*.cache
+*.orig
+*.backup
+Thumbs.db
+.DS_Store
+
+ImageProcessor.Umbraco_*.zip
+src/packages/*/**

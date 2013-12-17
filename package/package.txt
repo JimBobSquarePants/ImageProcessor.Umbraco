@@ -1,0 +1,7 @@
+# ImageProcessor for Umbraco
+
+ImageProcessor is a lightweight library that allows you to manipulate images on-the-fly.
+
+For details on how to use ImageProcessor, please see the documentation on the website:
+
+http://jimbobsquarepants.github.io/ImageProcessor/
