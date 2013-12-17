@@ -56,10 +56,12 @@
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
 			<BinFiles Include="$(ProjectDir)\bin\Release\*.dll" />
+			<ConfigFiles Include="$(ProjectDir)\config\*.config" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 		</ItemGroup>
 		<TimestampOffset Files="@(BinFiles)" Offset="-11" />
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
+		<Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(BuildDir)\config" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
 	</Target>
 
