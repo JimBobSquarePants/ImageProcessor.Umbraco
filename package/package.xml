@@ -27,7 +27,10 @@
 	<DictionaryItems />
 	<Languages />
 	<DataTypes />
-	<Actions />
+	<Actions>
+		<Action runat="install" undo="true" alias="ImageProcessor_AddConfigSections" />
+		<Action runat="install" undo="true" alias="ImageProcessor_AddHttpModule" />
+	</Actions>
 	<control />
 	<files />
 </umbPackage>
