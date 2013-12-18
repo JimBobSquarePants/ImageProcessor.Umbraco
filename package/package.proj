@@ -18,7 +18,7 @@
 		<VersionMinor>0</VersionMinor>
 		<VersionPatch>0</VersionPatch>
 		<VersionSuffix>-build</VersionSuffix>
-		<UmbracoVersion>4.5.2</UmbracoVersion>
+		<UmbracoVersion>4.10.0</UmbracoVersion>
 	</PropertyGroup>
 
 	<PropertyGroup>
@@ -56,11 +56,13 @@
 	<Target Name="PrepareFiles" DependsOnTargets="Compile">
 		<ItemGroup>
 			<BinFiles Include="$(ProjectDir)\bin\Release\*.dll" />
+			<DebugFiles Include="$(ProjectDir)\bin\Release\*.pdb" />
 			<ConfigFiles Include="$(ProjectDir)\config\imageprocessor\*.config" />
 			<PackageFile Include="$(MSBuildProjectDirectory)\package.xml" />
 		</ItemGroup>
 		<TimestampOffset Files="@(BinFiles)" Offset="-11" />
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
+		<Copy SourceFiles="@(DebugFiles)" DestinationFolder="$(BuildDir)\bin" Condition="$(VersionSuffix) == '-build'" />
 		<Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(BuildDir)\config\imageprocessor" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
 	</Target>
