@@ -20,7 +20,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 		/// <summary>
 		/// The alias of the action - for internal use only.
 		/// </summary>
-		internal static readonly string ActionAlias = "ImageProcessor_AddHttpModule";
+		const string ActionAlias = "ImageProcessor_AddHttpModule";
 
 		/// <summary>
 		/// The name of the HttpModule.
@@ -35,7 +35,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 		/// <summary>
 		/// Set the web.config full path
 		/// </summary>
-		const string FULL_PATH = "~/Web.config";
+		const string WebConfigPath = "~/Web.config";
 
 		/// <summary>
 		/// Add the module to the different locations for IIS6 and 7
@@ -52,7 +52,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 			{
 				var document = new XmlDocument();
 				document.PreserveWhitespace = true;
-				document.Load(IOHelper.MapPath(FULL_PATH));
+				document.Load(IOHelper.MapPath(WebConfigPath));
 				var foundOne = false;
 
 				// See if any of the target contains the module
@@ -117,7 +117,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 				document.PreserveWhitespace = true;
 
 				// Load the web.config file into the xml document
-				document.Load(IOHelper.MapPath(FULL_PATH));
+				document.Load(IOHelper.MapPath(WebConfigPath));
 
 				// Set modified document default to false
 				bool modified = false;
@@ -171,7 +171,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 				if (modified)
 				{
 					// Save the Rewrite config file with the new rewerite rule
-					document.Save(IOHelper.MapPath(FULL_PATH));
+					document.Save(IOHelper.MapPath(WebConfigPath));
 
 					// No errors so the result is true
 					result = true;
@@ -204,7 +204,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 			document.PreserveWhitespace = true;
 
 			// Load the web.config file into the xml document
-			document.Load(IOHelper.MapPath(FULL_PATH));
+			document.Load(IOHelper.MapPath(WebConfigPath));
 
 			// Set modified document default to false
 			var modified = false;
@@ -238,7 +238,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 				try
 				{
 					// Save the Rewrite config file with the new rewerite rule
-					document.Save(IOHelper.MapPath(FULL_PATH));
+					document.Save(IOHelper.MapPath(WebConfigPath));
 
 					// No errors so the result is true
 					result = true;
@@ -336,7 +336,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 		/// <returns>The sample xml as node</returns>
 		public XmlNode SampleXml()
 		{
-			var sample = string.Concat("<Action runat=\"install\" undo=\"true\" alias=\"", ActionAlias, "\" />");
+			var sample = string.Format("<Action runat=\"install\" undo=\"true\" alias=\"{0}\" />", ActionAlias);
 			return umbraco.cms.businesslogic.packager.standardPackageActions.helper.parseStringToXmlNode(sample);
 		}
 	}

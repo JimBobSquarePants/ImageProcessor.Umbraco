@@ -4,6 +4,7 @@ using System.IO;
 using System.Web.Configuration;
 using System.Xml;
 using ImageProcessor.Web.Config;
+using umbraco;
 using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.packager.standardPackageActions;
 using umbraco.interfaces;
@@ -23,7 +24,12 @@ namespace ImageProcessor.Umbraco.PackageActions
 		/// <summary>
 		/// The alias of the action - for internal use only.
 		/// </summary>
-		internal static readonly string ActionAlias = "ImageProcessor_AddConfigSections";
+		const string ActionAlias = "ImageProcessor_AddConfigSections";
+
+		/// <summary>
+		/// Set the web.config full path
+		/// </summary>
+		const string WebConfigPath = "~/Web.config";
 
 		/// <summary>
 		/// This Alias must be unique and is used as an identifier that must match the alias in the package action XML.
@@ -44,21 +50,102 @@ namespace ImageProcessor.Umbraco.PackageActions
 		{
 			try
 			{
-				var webConfig = WebConfigurationManager.OpenWebConfiguration("~/");
-				if (webConfig.SectionGroups["imageProcessor"] == null)
+				// Set result default to false
+				var result = false;
+
+				// Create a new xml document
+				var document = new XmlDocument();
+
+				// Keep current indentions format
+				document.PreserveWhitespace = true;
+
+				// Load the web.config file into the xml document
+				document.Load(IOHelper.MapPath(WebConfigPath));
+
+				// Set modified document default to false
+				bool modified = false;
+
+				var rootNode = document.SelectSingleNode("/configuration/configSections");
+				if (rootNode == null)
+					return result;
+
+				// Set insert node default true
+				bool insertNode = true;
+
+				// Look for existing nodes with same name like the new node
+				if (rootNode.HasChildNodes)
 				{
-					var sectionGroup = new ConfigurationSectionGroup();
+					// Look for existing nodeType nodes
+					var node = rootNode.SelectSingleNode(string.Format("sectionGroup[@name = '{0}']", "imageProcessor"));
 
-					this.AddSectionToSectionGroup(sectionGroup, "security", new ImageSecuritySection());
-					this.AddSectionToSectionGroup(sectionGroup, "processing", new ImageProcessingSection());
-					this.AddSectionToSectionGroup(sectionGroup, "cache", new ImageCacheSection());
-
-					webConfig.SectionGroups.Add("imageProcessor", sectionGroup);
-
-					webConfig.Save(ConfigurationSaveMode.Modified);
+					// If name already exists 
+					if (node != null)
+					{
+						// Cancel insert node operation
+						insertNode = false;
+					}
 				}
 
-				return true;
+				// Check for insert flag
+				if (insertNode)
+				{
+					// Create new node from xml-string
+					var group = document.CreateElement("sectionGroup");
+					group.Attributes.Append(xmlHelper.addAttribute(document, "name", "imageProcessor"));
+
+					var security = document.CreateElement("section");
+					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "security"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageSecuritySection, ImageProcessor.Web"));
+
+					var processing = document.CreateElement("section");
+					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "processing"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageProcessingSection, ImageProcessor.Web"));
+
+					var cache = document.CreateElement("section");
+					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "cache"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
+					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageCacheSection, ImageProcessor.Web"));
+
+					group.AppendChild(security);
+					group.AppendChild(processing);
+					group.AppendChild(cache);
+
+					var config = document.CreateElement("imageProcessor");
+
+					var configSecurity = document.CreateElement("security");
+					configSecurity.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+
+					var configCache = document.CreateElement("cache");
+					configCache.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+
+					var configProcessing = document.CreateElement("processing");
+					configSecurity.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+
+					config.AppendChild(configSecurity);
+					config.AppendChild(configCache);
+					config.AppendChild(configProcessing);
+
+					// Append new node after the root node
+					rootNode.ParentNode.InsertAfter(config, rootNode);
+
+					// Mark document modified
+					modified = true;
+				}
+
+
+				// Check for modified document
+				if (modified)
+				{
+					// Save the Rewrite config file with the new rewerite rule
+					document.Save(IOHelper.MapPath(WebConfigPath));
+
+					// No errors so the result is true
+					result = true;
+				}
+
+				return result;
 			}
 			catch (Exception ex)
 			{
@@ -74,7 +161,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 		/// <returns>The sample xml as node</returns>
 		public XmlNode SampleXml()
 		{
-			string xml = string.Concat("<Action runat=\"install\" undo=\"true\" alias=\"", this.Alias(), "\" />");
+			var xml = string.Format("<Action runat=\"install\" undo=\"true\" alias=\"{0}\" />", ActionAlias);
 			return helper.parseStringToXmlNode(xml);
 		}
 
@@ -88,15 +175,57 @@ namespace ImageProcessor.Umbraco.PackageActions
 		{
 			try
 			{
-				var webConfig = WebConfigurationManager.OpenWebConfiguration("~/");
-				if (webConfig.SectionGroups["imageprocessor"] != null)
-				{
-					webConfig.SectionGroups.Remove("imageprocessor");
+				// Set result default to false
+				var result = false;
 
-					webConfig.Save(ConfigurationSaveMode.Modified);
+				// Create a new xml document
+				var document = new XmlDocument();
+
+				// Keep current indentions format
+				document.PreserveWhitespace = true;
+
+				// Load the web.config file into the xml document
+				document.Load(IOHelper.MapPath(WebConfigPath));
+
+				// Set modified document default to false
+				var modified = false;
+
+				// Select root node in the web.config file for insert new nodes
+				var rootNode = document.SelectSingleNode("/configuration/configSections");
+
+				// Check for rootNode exists
+				if (rootNode == null)
+					return result;
+
+				// Look for existing nodes with same name of undo attribute
+				if (rootNode.HasChildNodes)
+				{
+					// Look for existing add nodes with attribute name
+					foreach (XmlNode existingNode in rootNode.SelectNodes(string.Format("sectionGroup[@name = '{0}']", "imageProcessor")))
+					{
+						// Remove existing node from root node
+						rootNode.RemoveChild(existingNode);
+						modified = true;
+					}
 				}
 
-				return true;
+				if (modified)
+				{
+					try
+					{
+						// Save the Rewrite config file with the new rewerite rule
+						document.Save(IOHelper.MapPath(WebConfigPath));
+
+						// No errors so the result is true
+						result = true;
+					}
+					catch (Exception ex)
+					{
+						Log.Add(LogTypes.Error, -1, string.Format("Error undoing '{0}' package action. {1}", ActionAlias, ex));
+					}
+				}
+
+				return result;
 			}
 			catch (Exception ex)
 			{
