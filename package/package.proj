@@ -14,10 +14,10 @@
 
 	<!-- PROPERTIES -->
 	<PropertyGroup>
-		<VersionMajor>3</VersionMajor>
+		<VersionMajor>1</VersionMajor>
 		<VersionMinor>0</VersionMinor>
 		<VersionPatch>0</VersionPatch>
-		<VersionSuffix>-build</VersionSuffix>
+		<VersionSuffix>-beta</VersionSuffix>
 		<UmbracoVersion>4.10.0</UmbracoVersion>
 	</PropertyGroup>
 
@@ -62,7 +62,7 @@
 		</ItemGroup>
 		<TimestampOffset Files="@(BinFiles)" Offset="-11" />
 		<Copy SourceFiles="@(BinFiles)" DestinationFolder="$(BuildDir)\bin" />
-		<Copy SourceFiles="@(DebugFiles)" DestinationFolder="$(BuildDir)\bin" Condition="$(VersionSuffix) == '-build'" />
+		<Copy SourceFiles="@(DebugFiles)" DestinationFolder="$(BuildDir)\bin" Condition="$(VersionSuffix) != ''" />
 		<Copy SourceFiles="@(ConfigFiles)" DestinationFolder="$(BuildDir)\config\imageprocessor" />
 		<Copy SourceFiles="@(PackageFile)" DestinationFolder="$(BuildDir)" />
 	</Target>
