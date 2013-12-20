@@ -3,3 +3,6 @@ ImageProcessor is a lightweight library that allows you to manipulate images on-
 For details on how to use ImageProcessor, please see the documentation on the website:
 
 http://jimbobsquarepants.github.io/ImageProcessor/
+
+This package will only work if your website is running .NET 4.5 (or above).
+If you are running .NET 4.0, it will not work correctly.
