@@ -89,7 +89,7 @@ namespace ImageProcessor.Umbraco.PackageActions
 				// Check for insert flag
 				if (insertNode)
 				{
-					// Create new node from xml-string
+					// imageProcessor config sectionGroup
 					var group = document.CreateElement("sectionGroup");
 					group.Attributes.Append(xmlHelper.addAttribute(document, "name", "imageProcessor"));
 
@@ -99,29 +99,32 @@ namespace ImageProcessor.Umbraco.PackageActions
 					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageSecuritySection, ImageProcessor.Web"));
 
 					var processing = document.CreateElement("section");
-					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "processing"));
-					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
-					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageProcessingSection, ImageProcessor.Web"));
+					processing.Attributes.Append(xmlHelper.addAttribute(document, "name", "processing"));
+					processing.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
+					processing.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageProcessingSection, ImageProcessor.Web"));
 
 					var cache = document.CreateElement("section");
-					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "cache"));
-					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
-					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageCacheSection, ImageProcessor.Web"));
+					cache.Attributes.Append(xmlHelper.addAttribute(document, "name", "cache"));
+					cache.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
+					cache.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageCacheSection, ImageProcessor.Web"));
 
 					group.AppendChild(security);
 					group.AppendChild(processing);
 					group.AppendChild(cache);
 
+					rootNode.AppendChild(group);
+
+					// imageProcessor config / configSource
 					var config = document.CreateElement("imageProcessor");
 
 					var configSecurity = document.CreateElement("security");
-					configSecurity.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+					configSecurity.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\security.config"));
 
 					var configCache = document.CreateElement("cache");
-					configCache.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+					configCache.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\cache.config"));
 
 					var configProcessing = document.CreateElement("processing");
-					configSecurity.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
+					configProcessing.Attributes.Append(xmlHelper.addAttribute(document, "configSource", @"config\imageprocessor\processing.config"));
 
 					config.AppendChild(configSecurity);
 					config.AppendChild(configCache);
@@ -200,10 +203,23 @@ namespace ImageProcessor.Umbraco.PackageActions
 				// Look for existing nodes with same name of undo attribute
 				if (rootNode.HasChildNodes)
 				{
-					// Look for existing add nodes with attribute name
+					// Look for existing add nodes with element/attribute name
 					foreach (XmlNode existingNode in rootNode.SelectNodes(string.Format("sectionGroup[@name = '{0}']", "imageProcessor")))
 					{
 						// Remove existing node from root node
+						rootNode.RemoveChild(existingNode);
+						modified = true;
+					}
+				}
+
+				rootNode = document.SelectSingleNode("/configuration");
+				if (rootNode == null)
+					return result;
+
+				if (rootNode.HasChildNodes)
+				{
+					foreach (XmlNode existingNode in rootNode.SelectNodes(string.Format("{0}", "imageProcessor")))
+					{
 						rootNode.RemoveChild(existingNode);
 						modified = true;
 					}
