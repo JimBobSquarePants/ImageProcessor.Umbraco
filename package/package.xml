@@ -5,7 +5,7 @@
 			<name>ImageProcessor for Umbraco</name>
 			<version>0.0.0</version>
 			<license url="http://www.apache.org/licenses/LICENSE-2.0">Apache License, Version 2.0</license>
-			<url>http://our.umbraco.org/projects/</url>
+			<url>http://our.umbraco.org/projects/collaboration/imageprocessor</url>
 			<requirements>
 				<major>0</major>
 				<minor>0</minor>
