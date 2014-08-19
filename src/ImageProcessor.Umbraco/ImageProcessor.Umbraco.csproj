@@ -2,12 +2,6 @@
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
-    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
-    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
-    <RestorePackages>true</RestorePackages>
-  </PropertyGroup>
-  <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{124A5C62-0341-4AA1-81AF-0750F358DD37}</ProjectGuid>
@@ -29,6 +23,8 @@
     <IISExpressAnonymousAuthentication />
     <IISExpressWindowsAuthentication />
     <IISExpressUseClassicPipelineMode />
+    <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
+    <RestorePackages>true</RestorePackages>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -58,15 +54,13 @@
       <HintPath>..\packages\UmbracoCms.Core.4.10.0\lib\cms.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="ImageProcessor, Version=1.8.1.1, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ImageProcessor, Version=1.9.5.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ImageProcessor.1.8.1.1\lib\net45\ImageProcessor.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
-    <Reference Include="ImageProcessor.Web, Version=3.0.0.3, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="ImageProcessor.Web, Version=3.3.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\ImageProcessor.Web.3.0.0.3\lib\net45\ImageProcessor.Web.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\ImageProcessor.Web.3.3.0.0\lib\net45\ImageProcessor.Web.dll</HintPath>
     </Reference>
     <Reference Include="interfaces">
       <HintPath>..\packages\UmbracoCms.Core.4.10.0\lib\interfaces.dll</HintPath>
