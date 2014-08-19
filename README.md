@@ -2,8 +2,8 @@
 
 [ImageProcessor](https://github.com/JimBobSquarePants/ImageProcessor) is a lightweight library that allows you to manipulate images on-the-fly.
 
-For details on how to use [ImageProcessor](https://github.com/JimBobSquarePants/ImageProcessor), please see the documentation on the website:
-http://jimbobsquarepants.github.io/ImageProcessor/
+For details on how to use [ImageProcessor](http://imageprocessor.org), please see the documentation on the website:
+http://imageprocessor.org
 
 ## Prerequisites
 This package requires your website to be running .NET 4.5 (or above).  It has been tested on Umbraco 4.10+.
