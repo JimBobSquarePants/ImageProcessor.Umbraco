@@ -94,17 +94,17 @@ namespace ImageProcessor.Umbraco.PackageActions
 					var security = document.CreateElement("section");
 					security.Attributes.Append(xmlHelper.addAttribute(document, "name", "security"));
 					security.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
-					security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageSecuritySection, ImageProcessor.Web"));
+                    security.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Configuration.ImageSecuritySection, ImageProcessor.Web"));
 
 					var processing = document.CreateElement("section");
 					processing.Attributes.Append(xmlHelper.addAttribute(document, "name", "processing"));
 					processing.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
-					processing.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageProcessingSection, ImageProcessor.Web"));
+                    processing.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Configuration.ImageProcessingSection, ImageProcessor.Web"));
 
 					var cache = document.CreateElement("section");
 					cache.Attributes.Append(xmlHelper.addAttribute(document, "name", "cache"));
 					cache.Attributes.Append(xmlHelper.addAttribute(document, "requirePermission", "false"));
-					cache.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Config.ImageCacheSection, ImageProcessor.Web"));
+                    cache.Attributes.Append(xmlHelper.addAttribute(document, "type", "ImageProcessor.Web.Configuration.ImageCacheSection, ImageProcessor.Web"));
 
 					group.AppendChild(security);
 					group.AppendChild(processing);
