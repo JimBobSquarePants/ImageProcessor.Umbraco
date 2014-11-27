@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Configuration;
 using System.IO;
-using System.Web.Configuration;
 using System.Xml;
-using ImageProcessor.Web.Config;
 using umbraco;
 using umbraco.BusinessLogic;
 using umbraco.cms.businesslogic.packager.standardPackageActions;
